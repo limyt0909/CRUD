@@ -1,0 +1,19 @@
+<%- include("header") -%>
+
+<h1>문의하기</h1>
+
+<form action="/more/<%= model.Book_ID %>" >
+  <div class="form-horizontal">
+
+    <%- include("_display") -%>
+
+    <div class="form-group row">
+      <label class="col-form-label col-sm-2"></label>
+      <div class="col-sm-10">
+        <a href="/books" class="btn btn-outline-dark cancel">Back</a>
+      </div>
+    </div>
+  </div>
+</form>
+
+<%- include("footer") -%>
