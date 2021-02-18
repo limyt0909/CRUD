@@ -13,10 +13,11 @@ const db = new sqlite3.Database(db_name, (err) => {
 
 const sql_create = `CREATE TABLE IF NOT EXISTS Books (
   Book_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+
   Title VARCHAR(100) NOT NULL,
   Author VARCHAR(100) NOT NULL, 
-  Comments TEXT
 
+  Comments TEXT
 );`;
 
 // db.run : 첫번째 파라미터로 넘어온 sql query 실행, 그리고 두번째 파라미터인 callback함수 실행함
@@ -61,7 +62,7 @@ app.get("/data", (req, res) => {
 });
 
 app.get("/books", (req, res) => {
-  const sql = "SELECT * FROM Books ORDER BY Title";
+  const sql = "SELECT * FROM Books ORDER BY Book_ID DESC";
   db.all(sql, [], (err, rows) => {
     if (err) {
       return console.error(err.message);
