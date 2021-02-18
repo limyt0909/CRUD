@@ -13,11 +13,10 @@ const db = new sqlite3.Database(db_name, (err) => {
 
 const sql_create = `CREATE TABLE IF NOT EXISTS Books (
   Book_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-
   Title VARCHAR(100) NOT NULL,
   Author VARCHAR(100) NOT NULL, 
   Comments TEXT
-  
+
 );`;
 
 // db.run : 첫번째 파라미터로 넘어온 sql query 실행, 그리고 두번째 파라미터인 callback함수 실행함
