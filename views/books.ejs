@@ -12,7 +12,7 @@
           <th>제목</th>
           <th>작성자</th>
           <th>작성일</th>
-          <th>조회</th>
+ 
           <th class="d-print-none">
             <a class="btn btn-sm btn-success" href="/create">Add</a>
           </th>
@@ -22,12 +22,11 @@
       <tbody>
         <% for (const book of model) { %>
           <tr>
-            <td><%= book.Book_ID %></td>
+            <td><%= book.idx %></td>
             <td><%= book.Title %></td>
             <td><%= book.Author %></td>
-            <td><%= book.Datetime %></td>
-            <td><%= book.Lookup %></td>
-
+            <td><%= book.DateTime %></td>
+            
 
             <td class="d-print-none">
               <a class="btn btn-sm btn-warning" href="/edit/<%= book.Book_ID %>">Edit</a>
@@ -36,6 +35,7 @@
             </td>
           </tr>
         <% } %>
+
       </tbody>
     </table>
   </div>

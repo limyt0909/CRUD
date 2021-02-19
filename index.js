@@ -13,11 +13,11 @@ const db = new sqlite3.Database(db_name, (err) => {
 
 const sql_create = `CREATE TABLE IF NOT EXISTS Books (
   Book_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-
   Title VARCHAR(100) NOT NULL,
   Author VARCHAR(100) NOT NULL, 
-
+  DateTime real,
   Comments TEXT
+
 );`;
 
 // db.run : 첫번째 파라미터로 넘어온 sql query 실행, 그리고 두번째 파라미터인 callback함수 실행함
@@ -25,7 +25,7 @@ db.run(sql_create, (err) => {
   if (err) {
     return console.error(err.message);
   }
-  console.log("Successful creation of the 'Books' table");
+  console.log("Successful creation of the 'Book' table");
 });
 
 // Creating the Express server
@@ -37,8 +37,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false })); // <--- middleware configuration
 // Starting the server
-app.listen(3000, () => {
-  console.log("Server started (http://localhost:3000/) !");
+app.listen(80, () => {
+  console.log("Server started (http://localhost:80/) !");
 });
 
 // GET /
@@ -62,7 +62,9 @@ app.get("/data", (req, res) => {
 });
 
 app.get("/books", (req, res) => {
-  const sql = "SELECT * FROM Books ORDER BY Book_ID DESC";
+  const sql =
+    "SELECT row_number() over (order by Book_id) as idx, * FROM Books ORDER BY Book_ID DESC";
+
   db.all(sql, [], (err, rows) => {
     if (err) {
       return console.error(err.message);
@@ -71,7 +73,7 @@ app.get("/books", (req, res) => {
   });
 });
 
-// GET /edit/5
+// GET /edit
 app.get("/edit/:id", (req, res) => {
   const id = req.params.id;
   const sql = "SELECT * FROM Books WHERE Book_ID = ?";
@@ -106,7 +108,8 @@ app.get("/create", (req, res) => {
 
 // POST /create
 app.post("/create", (req, res) => {
-  const sql = "INSERT INTO Books (Title, Author, Comments) VALUES (?, ?, ?)";
+  const sql =
+    "INSERT INTO Books (Title, Author, Comments, DateTime) SELECT ?, ?, ?, date('now')";
   const book = [req.body.Title, req.body.Author, req.body.Comments];
   db.run(sql, book, (err) => {
     // if (err) ...
